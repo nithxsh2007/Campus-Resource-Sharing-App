@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f2">
+    <title>Dashboard | CPMS</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/dashboard.js" defer></script>
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+            <a class="brand-lockup dashboard-brand" href="/dashboard.html" aria-label="CPMS dashboard">
+                <span class="brand-mark" aria-hidden="true">C</span>
+                <span>
+                    <span class="brand-name">CPMS</span>
+                    <span class="brand-caption">PLACEMENT SERVICES</span>
+                </span>
+            </a>
+
+            <div class="sidebar-label">WORKSPACE</div>
+            <nav class="dashboard-nav" aria-label="Dashboard navigation">
+                <a class="dashboard-nav-link is-current" href="#overview" aria-current="page">
+                    <span class="nav-icon" aria-hidden="true">01</span> Overview
+                </a>
+                <a class="dashboard-nav-link" href="#student-profiles">
+                    <span class="nav-icon" aria-hidden="true">02</span> Student profiles
+                </a>
+                <a class="dashboard-nav-link" id="admin-nav-link" href="#admin-tools" hidden>
+                    <span class="nav-icon" aria-hidden="true">03</span> Admin tools
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-account">
+                    <span class="account-avatar" id="account-avatar">C</span>
+                    <span class="sidebar-account-copy">
+                        <span class="account-name" id="account-name">Signed in</span>
+                        <span class="account-email" id="sidebar-email"></span>
+                    </span>
+                </div>
+                <button class="logout-button" id="logout-button" type="button">Sign out</button>
+            </div>
+        </aside>
+
+        <main class="dashboard-main" id="overview">
+            <header class="dashboard-topbar">
+                <div class="breadcrumb"><span>CPMS</span><span class="breadcrumb-divider">/</span><span>Overview</span></div>
+                <div class="topbar-actions">
+                    <div class="connection-state"><span class="connection-dot"></span> Workspace online</div>
+                    <span class="refresh-status" id="refresh-status" aria-live="polite"></span>
+                    <button class="refresh-button" id="refresh-button" type="button" title="Refresh dashboard data">Refresh</button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section class="dashboard-welcome">
+                    <div>
+                        <p class="dashboard-eyebrow">STUDENT &amp; CAREER SERVICES</p>
+                        <h1>Welcome back<span class="welcome-period">.</span></h1>
+                        <p class="welcome-account" id="welcome-email"></p>
+                    </div>
+                    <div class="welcome-date" id="today-date"></div>
+                </section>
+
+                <section class="stats-grid" aria-label="Placement statistics">
+                    <article class="stat-card"><span class="stat-label">TOTAL STUDENTS</span><strong id="total-students">-</strong><span class="stat-footnote">Student profiles</span></article>
+                    <article class="stat-card"><span class="stat-label">TOTAL COMPANIES</span><strong id="total-companies">-</strong><span class="stat-footnote">Recruiting partners</span></article>
+                    <article class="stat-card"><span class="stat-label">PLACEMENT DRIVES</span><strong id="total-drives">-</strong><span class="stat-footnote">Scheduled and completed</span></article>
+                    <article class="stat-card stat-card-accent"><span class="stat-label">STUDENTS PLACED</span><strong id="students-placed">-</strong><span class="stat-footnote">Unique placed students</span></article>
+                </section>
+
+                <section class="quick-actions" aria-label="Quick actions">
+                    <span class="quick-actions-label">QUICK ACTIONS</span>
+                    <a href="#student-profiles">Add student</a>
+                    <button type="button" data-open-dialog="company-dialog">Add company</button>
+                    <button type="button" data-open-dialog="drive-dialog">Add placement drive</button>
+                    <a href="#recent-students">View students</a>
+                    <a href="#eligibility-checker">Check eligibility</a>
+                    <a href="#placement-reports">Reports</a>
+                </section>
+
+                <section class="workspace-banner" aria-label="Placement workspace">
+                    <div class="banner-copy">
+                        <span class="banner-kicker">PLACEMENT WORKSPACE</span>
+                        <h2>Student records</h2>
+                        <p>Keep profiles together and ready for placement activity.</p>
+                    </div>
+                    <a class="banner-action" href="#student-profiles">Add a student <span aria-hidden="true">+</span></a>
+                    <div class="banner-index" aria-hidden="true">CP / 01</div>
+                </section>
+
+                <section class="dashboard-data-grid">
+                    <article class="data-panel" id="upcoming-drives">
+                        <div class="section-heading compact-heading">
+                            <div><p class="section-overline">WHAT'S NEXT</p><h2>Upcoming placement drives</h2></div>
+                            <button class="text-action" type="button" data-open-dialog="drive-dialog">Add drive</button>
+                        </div>
+                        <div class="drive-list" id="upcoming-drive-list" aria-live="polite"></div>
+                    </article>
+
+                    <article class="data-panel" id="placement-status">
+                        <div class="section-heading compact-heading">
+                            <div><p class="section-overline">CANDIDATE PIPELINE</p><h2>Placement status</h2></div>
+                            <button class="text-action" type="button" data-open-dialog="status-dialog">Update</button>
+                        </div>
+                        <div class="status-list" id="placement-status-list"></div>
+                    </article>
+                </section>
+
+                <section class="profile-section eligibility-section" id="eligibility-checker" aria-labelledby="eligibility-title">
+                    <div class="section-heading">
+                        <div><p class="section-overline">DRIVE MATCHING</p><h2 id="eligibility-title">Eligibility checker</h2></div>
+                        <span class="section-count" id="eligibility-count">SELECT A DRIVE</span>
+                    </div>
+                    <form class="eligibility-toolbar" id="eligibility-form">
+                        <div class="field"><label for="eligibility-drive">Placement drive</label><select id="eligibility-drive" required><option value="">Choose a drive</option></select></div>
+                        <label class="eligibility-filter"><input id="eligible-only" type="checkbox"> Eligible only</label>
+                        <button class="save-student-button" type="submit">Check eligibility</button>
+                    </form>
+                    <p class="feature-feedback" id="eligibility-feedback" role="status" aria-live="polite"></p>
+                    <div class="table-scroll">
+                        <table class="students-table directory-table">
+                            <thead><tr><th>Student</th><th>Department</th><th>CGPA</th><th>Result</th><th>Eligibility checks</th></tr></thead>
+                            <tbody id="eligibility-rows"><tr><td class="empty-cell" colspan="5">Choose a drive to check eligible students.</td></tr></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="dashboard-lower-grid">
+                    <article class="data-panel recent-panel" id="recent-students">
+                        <div class="section-heading compact-heading students-heading">
+                            <div><p class="section-overline">LATEST REGISTRATIONS</p><h2>Recent students</h2></div>
+                            <a class="text-action" href="#recent-students">View students</a>
+                        </div>
+                        <label class="search-field" for="dashboard-search">
+                            <span aria-hidden="true">SEARCH</span>
+                            <input id="dashboard-search" type="search" placeholder="Students or companies" autocomplete="off">
+                        </label>
+                        <div class="search-results" id="search-results" hidden></div>
+                        <div class="table-scroll">
+                            <table class="students-table">
+                                <thead><tr><th>Student</th><th>Email</th><th>Department</th><th>Registered</th></tr></thead>
+                                <tbody id="recent-student-rows"></tbody>
+                            </table>
+                        </div>
+                    </article>
+
+                    <div class="dashboard-side-panels">
+                        <article class="data-panel">
+                            <div class="section-heading compact-heading"><div><p class="section-overline">LATEST UPDATES</p><h2>Recent activity</h2></div></div>
+                            <div class="activity-list" id="recent-activity-list"></div>
+                        </article>
+                        <article class="data-panel">
+                            <div class="section-heading compact-heading"><div><p class="section-overline">STAY INFORMED</p><h2>Notifications</h2></div></div>
+                            <div class="notification-list" id="notification-list"></div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="profile-section reports-section" id="placement-reports" aria-labelledby="reports-title">
+                    <div class="section-heading">
+                        <div><p class="section-overline">OUTCOMES &amp; TRENDS</p><h2 id="reports-title">Placement reports</h2></div>
+                        <button class="profile-button" id="export-report-button" type="button">Export CSV</button>
+                    </div>
+                    <div class="report-summary-grid">
+                        <article><span>Total applications</span><strong id="report-applications">—</strong></article>
+                        <article><span>Shortlisted</span><strong id="report-shortlisted">—</strong></article>
+                        <article><span>Interviews</span><strong id="report-interviews">—</strong></article>
+                        <article><span>Placement rate</span><strong id="report-rate">—</strong></article>
+                    </div>
+                    <div class="data-panel report-breakdown">
+                        <div class="section-heading compact-heading"><div><p class="section-overline">BY DEPARTMENT</p><h2>Placement outcomes</h2></div><span class="section-count" id="report-generated"></span></div>
+                        <div class="table-scroll"><table class="students-table directory-table"><thead><tr><th>Department</th><th>Students</th><th>Placed</th><th>Rate</th></tr></thead><tbody id="report-department-rows"></tbody></table></div>
+                    </div>
+                </section>
+
+                <section class="profile-section" id="student-profiles" aria-labelledby="student-form-title">
+                    <div class="section-heading">
+                        <div>
+                            <p class="section-overline">DIRECTORY</p>
+                            <h2 id="student-form-title">Add student profile</h2>
+                        </div>
+                        <span class="section-count">NEW RECORD</span>
+                    </div>
+
+                    <form class="student-form" id="student-form">
+                        <input type="hidden" id="student-id" name="_id">
+                        <div class="student-form-grid">
+                            <div class="field">
+                                <label for="student-name">Full name</label>
+                                <input id="student-name" name="name" type="text" autocomplete="name" placeholder="Student name" required>
+                            </div>
+                            <div class="field">
+                                <label for="student-email">Email address</label>
+                                <input id="student-email" name="email" type="email" autocomplete="email" placeholder="student@college.edu" required>
+                            </div>
+                            <div class="field">
+                                <label for="student-department">Department</label>
+                                <input id="student-department" name="department" type="text" placeholder="e.g. Computer Science" required>
+                            </div>
+                            <div class="field">
+                                <label for="student-cgpa">CGPA</label>
+                                <input id="student-cgpa" name="cgpa" type="number" min="0" max="10" step="0.01" placeholder="0.00" required>
+                            </div>
+                            <div class="field student-skills-field">
+                                <label for="student-skills">Skills</label>
+                                <input id="student-skills" name="skills" type="text" placeholder="e.g. JavaScript, SQL, communication" required>
+                            </div>
+                        </div>
+                        <div class="student-form-footer">
+                            <p class="dashboard-message" id="student-message" role="status" aria-live="polite"></p>
+                            <div class="student-form-actions">
+                                <button class="secondary-button" id="cancel-student-edit" type="button" hidden>Cancel edit</button>
+                                <button class="save-student-button" id="save-student-button" type="submit">Save student profile</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="profile-section management-section" aria-labelledby="directory-title">
+                    <div class="section-heading">
+                        <div>
+                            <p class="section-overline">MANAGE RECORDS</p>
+                            <h2 id="directory-title">Students, companies &amp; drives</h2>
+                        </div>
+                        <span class="section-count">CRUD</span>
+                    </div>
+
+                    <div class="management-grid">
+                        <article class="data-panel directory-panel">
+                            <div class="section-heading compact-heading">
+                                <div><p class="section-overline">STUDENT DIRECTORY</p><h2>Record list</h2></div>
+                            </div>
+                            <div class="table-scroll">
+                                <table class="students-table directory-table">
+                                    <thead><tr><th>Name</th><th>Dept</th><th>CGPA</th><th>Skills</th><th>Actions</th></tr></thead>
+                                    <tbody id="student-directory-rows"></tbody>
+                                </table>
+                            </div>
+                        </article>
+
+                        <article class="data-panel directory-panel">
+                            <div class="section-heading compact-heading">
+                                <div><p class="section-overline">COMPANY DIRECTORY</p><h2>Recruiters</h2></div>
+                            </div>
+                            <div class="table-scroll">
+                                <table class="students-table directory-table">
+                                    <thead><tr><th>Name</th><th>Location</th><th>Role</th><th>Actions</th></tr></thead>
+                                    <tbody id="company-directory-rows"></tbody>
+                                </table>
+                            </div>
+                        </article>
+
+                        <article class="data-panel directory-panel full-width-panel">
+                            <div class="section-heading compact-heading">
+                                <div><p class="section-overline">DRIVE SCHEDULE</p><h2>Placement drives</h2></div>
+                            </div>
+                            <div class="table-scroll">
+                                <table class="students-table directory-table">
+                                    <thead><tr><th>Company</th><th>Role</th><th>Date</th><th>Eligibility</th><th>Actions</th></tr></thead>
+                                    <tbody id="drive-directory-rows"></tbody>
+                                </table>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="profile-section admin-section" id="admin-tools" aria-labelledby="admin-title" hidden>
+                    <div class="section-heading">
+                        <div><p class="section-overline">RESTRICTED CONTROLS</p><h2 id="admin-title">Administrator tools</h2></div>
+                        <span class="section-count">ADMINISTRATOR</span>
+                    </div>
+                    <div class="admin-overview" id="admin-overview" aria-live="polite"></div>
+                    <div class="admin-tools-grid">
+                        <article class="data-panel">
+                            <div class="section-heading compact-heading"><div><p class="section-overline">ACCESS CONTROL</p><h2>Accounts &amp; roles</h2></div></div>
+                            <div class="table-scroll"><table class="students-table directory-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Access</th></tr></thead><tbody id="admin-user-rows"></tbody></table></div>
+                            <p class="feature-feedback" id="admin-feedback" role="status" aria-live="polite"></p>
+                        </article>
+                        <article class="data-panel database-panel">
+                            <div class="section-heading compact-heading"><div><p class="section-overline">DATABASE MANAGEMENT</p><h2>Storage &amp; backup</h2></div></div>
+                            <p class="database-name" id="database-name"></p>
+                            <p class="database-state" id="database-state"></p>
+                            <button class="profile-button profile-primary" id="download-backup-button" type="button">Download data backup</button>
+                        </article>
+                    </div>
+                </section>
+
+                <dialog class="dashboard-dialog" id="company-dialog">
+                    <form class="dialog-form" id="company-form">
+                        <input type="hidden" id="company-id" name="_id">
+                        <div class="dialog-heading"><div><p class="section-overline">RECRUITING PARTNER</p><h2>Add company</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close">Close</button></div>
+                        <div class="field"><label for="company-name">Company name</label><input id="company-name" name="name" required></div>
+                        <div class="field"><label for="company-location">Location</label><input id="company-location" name="location" required></div>
+                        <div class="field"><label for="company-role">Job role</label><input id="company-role" name="jobRole" required></div>
+                        <div class="field"><label for="company-salary">Salary</label><input id="company-salary" name="salary" type="number" min="0" step="0.01"></div>
+                        <div class="field"><label for="company-eligibility">Eligibility</label><input id="company-eligibility" name="eligibility" required></div>
+                        <p class="dialog-message" role="status" aria-live="polite"></p>
+                        <div class="dialog-actions">
+                            <button class="secondary-button" id="cancel-company-edit" type="button">Cancel edit</button>
+                            <button class="save-student-button" type="submit">Save company</button>
+                        </div>
+                    </form>
+                </dialog>
+
+                <dialog class="dashboard-dialog" id="drive-dialog">
+                    <form class="dialog-form" id="drive-form">
+                        <input type="hidden" id="drive-id" name="_id">
+                        <div class="dialog-heading"><div><p class="section-overline">RECRUITMENT</p><h2>Add placement drive</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close">Close</button></div>
+                        <div class="field"><label for="drive-company">Company</label><select id="drive-company" name="company" required><option value="">Select a company</option></select></div>
+                        <div class="field"><label for="drive-date">Drive date</label><input id="drive-date" name="driveDate" type="date" required></div>
+                        <div class="field"><label for="drive-role">Job role</label><input id="drive-role" name="jobRole" required></div>
+                        <div class="field"><label for="drive-eligibility">Eligibility</label><input id="drive-eligibility" name="eligibility" placeholder="e.g. CGPA 7.0+, CSE/IT" required></div>
+                        <p class="dialog-message" role="status" aria-live="polite"></p>
+                        <div class="dialog-actions">
+                            <button class="secondary-button" id="cancel-drive-edit" type="button">Cancel edit</button>
+                            <button class="save-student-button" type="submit">Save drive</button>
+                        </div>
+                    </form>
+                </dialog>
+
+                <dialog class="dashboard-dialog" id="status-dialog">
+                    <form class="dialog-form" id="status-form">
+                        <div class="dialog-heading"><div><p class="section-overline">CANDIDATE PIPELINE</p><h2>Update placement status</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close">Close</button></div>
+                        <div class="field"><label for="status-student">Student</label><select id="status-student" name="student" required><option value="">Select a student</option></select></div>
+                        <div class="field"><label for="status-drive">Placement drive</label><select id="status-drive" name="drive" required><option value="">Select a drive</option></select></div>
+                        <div class="field"><label for="status-value">Status</label><select id="status-value" name="status" required><option>Applied</option><option>Shortlisted</option><option>Interview</option><option>Selected</option><option>Rejected</option><option>Placed</option></select></div>
+                        <p class="dialog-message" role="status" aria-live="polite"></p>
+                        <button class="save-student-button" type="submit">Save status</button>
+                    </form>
+                </dialog>
+
+                <dialog class="dashboard-dialog" id="record-view-dialog">
+                    <div class="dialog-heading"><div><p class="section-overline">DETAILS</p><h2>Record preview</h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close">Close</button></div>
+                    <div class="record-view-content" id="record-view-content"></div>
+                </dialog>
+
+                <footer class="dashboard-footer"><span>CPMS / COLLEGE PLACEMENT MANAGEMENT SYSTEM</span><span>STUDENT SERVICES</span></footer>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

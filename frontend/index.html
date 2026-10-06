@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f2">
+    <title>Sign in | CPMS</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+</head>
+<body>
+    <main class="auth-layout">
+        <aside class="campus-panel" aria-label="College Placement Management System">
+            <div class="brand-lockup">
+                <div class="brand-mark" aria-hidden="true">C</div>
+                <div>
+                    <p class="brand-name">CPMS</p>
+                    <p class="brand-caption">PLACEMENT SERVICES</p>
+                </div>
+            </div>
+
+            <div class="campus-content">
+                <p class="eyebrow"><span class="status-dot"></span> CAREER OFFICE / 2026</p>
+                <h1>Make your next move count.</h1>
+                <p class="campus-copy">Your placement journey, connected from campus to career.</p>
+
+                <section class="placement-pulse" aria-label="Placement overview">
+                    <div class="pulse-heading">
+                        <span>PLACEMENT PULSE</span>
+                        <span class="pulse-period">THIS SEASON</span>
+                    </div>
+                    <div class="pulse-number-row">
+                        <p class="pulse-number">84<span>%</span></p>
+                        <p class="pulse-note">students placed<br>and moving forward</p>
+                    </div>
+                    <div class="pulse-chart" aria-hidden="true">
+                        <span style="--bar: 34%"></span>
+                        <span style="--bar: 48%"></span>
+                        <span style="--bar: 42%"></span>
+                        <span style="--bar: 63%"></span>
+                        <span style="--bar: 55%"></span>
+                        <span style="--bar: 76%"></span>
+                        <span style="--bar: 68%"></span>
+                        <span style="--bar: 92%"></span>
+                        <span style="--bar: 82%"></span>
+                        <span style="--bar: 100%"></span>
+                        <span style="--bar: 89%"></span>
+                        <span style="--bar: 100%"></span>
+                    </div>
+                    <div class="pulse-labels"><span>JAN</span><span>MAR</span><span>MAY</span><span>JUL</span></div>
+                    <div class="pulse-footer">
+                        <span><i class="legend-dot"></i> Offers accepted</span>
+                        <span>+12% <b>vs last season</b></span>
+                    </div>
+                </section>
+            </div>
+
+            <p class="campus-footer">A clearer path from classroom to career.</p>
+        </aside>
+
+        <section class="form-panel" aria-labelledby="form-title">
+            <div class="mobile-brand brand-lockup">
+                <div class="brand-mark" aria-hidden="true">C</div>
+                <div>
+                    <p class="brand-name">CPMS</p>
+                    <p class="brand-caption">PLACEMENT SERVICES</p>
+                </div>
+            </div>
+
+            <div class="auth-content">
+                <p class="form-kicker">COLLEGE PLACEMENT MANAGEMENT SYSTEM</p>
+                <h2 id="form-title">Welcome back</h2>
+                <p class="form-intro" id="form-intro">Sign in to continue to your placement workspace.</p>
+
+                <div class="auth-tabs" role="group" aria-label="Choose account action">
+                    <button class="auth-tab is-active" id="login-tab" type="button" aria-pressed="true">Sign in</button>
+                    <button class="auth-tab" id="register-tab" type="button" aria-pressed="false">Create account</button>
+                </div>
+
+                <form id="auth-form">
+                    <div class="field" id="name-field" hidden>
+                        <label for="name">Full name</label>
+                        <input id="name" name="name" type="text" autocomplete="name" placeholder="e.g. Aisha Sharma" minlength="2">
+                    </div>
+                    <div class="field">
+                        <label for="email">Email address</label>
+                        <input id="email" name="email" type="email" autocomplete="email" placeholder="you@college.edu" required>
+                    </div>
+                    <div class="field">
+                        <div class="label-row">
+                            <label for="password">Password</label>
+                            <span class="password-hint" id="password-hint">Your account password</span>
+                        </div>
+                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+                    </div>
+
+                    <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+                    <button class="submit-button" id="submit-button" type="submit">Sign in</button>
+                </form>
+
+                <p class="privacy-note">The first registered account is Administrator. If no admin exists, the first legacy account to sign in is promoted. New accounts start as Placement Officers.</p>
+            </div>
+
+            <footer class="form-footer"><span>CPMS</span><span>STUDENT &amp; CAREER SERVICES</span></footer>
+        </section>
+    </main>
+</body>
+</html>

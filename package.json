@@ -1,0 +1,9 @@
+{
+  "name": "cpms",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix backend start",
+    "start": "npm --prefix backend start"
+  }
+}

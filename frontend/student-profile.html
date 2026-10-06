@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f2">
+    <title>Student Profile | CPMS</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/student-profile.js" defer></script>
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+            <a class="brand-lockup dashboard-brand" href="/dashboard.html" aria-label="CPMS dashboard">
+                <span class="brand-mark" aria-hidden="true">C</span>
+                <span><span class="brand-name">CPMS</span><span class="brand-caption">PLACEMENT SERVICES</span></span>
+            </a>
+            <div class="sidebar-label">WORKSPACE</div>
+            <nav class="dashboard-nav" aria-label="Dashboard navigation">
+                <a class="dashboard-nav-link" href="/dashboard.html"><span class="nav-icon" aria-hidden="true">01</span> Overview</a>
+                <a class="dashboard-nav-link is-current" href="/dashboard.html#student-profiles" aria-current="page"><span class="nav-icon" aria-hidden="true">02</span> Student profiles</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="sidebar-account">
+                    <span class="account-avatar" id="account-avatar">C</span>
+                    <span class="sidebar-account-copy"><span class="account-name">Signed in</span><span class="account-email" id="sidebar-email"></span></span>
+                </div>
+                <button class="logout-button" id="logout-button" type="button">Sign out</button>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-topbar">
+                <div class="breadcrumb"><a href="/dashboard.html">CPMS</a><span class="breadcrumb-divider">/</span><span>Student profile</span></div>
+                <a class="profile-back-link" href="/dashboard.html#student-profiles">Back to directory</a>
+            </header>
+            <div class="dashboard-content profile-page-content">
+                <p class="profile-page-eyebrow">STUDENT RECORD <span id="profile-record-id"></span></p>
+                <div class="profile-loading" id="profile-loading" role="status" aria-live="polite">Loading student profile...</div>
+                <section id="profile-page" hidden>
+                    <header class="profile-hero">
+                        <div class="profile-identity">
+                            <div class="profile-avatar" id="profile-avatar" aria-hidden="true">S</div>
+                            <div class="profile-identity-copy">
+                                <p class="section-overline">STUDENT PROFILE</p>
+                                <h1 id="profile-name"></h1>
+                                <a class="profile-email" id="profile-email-link"></a>
+                                <p class="profile-department" id="profile-department"></p>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button class="profile-button profile-primary" id="edit-profile-button" type="button">Edit profile</button>
+                            <button class="profile-button" id="copy-email-button" type="button">Copy email</button>
+                            <button class="profile-button" id="print-profile-button" type="button">Print</button>
+                            <button class="profile-button profile-danger" id="delete-profile-button" type="button">Delete</button>
+                        </div>
+                    </header>
+
+                    <div class="profile-overview-grid">
+                        <section class="profile-main-column">
+                            <form class="profile-edit-form" id="profile-edit-form" hidden>
+                                <div class="section-heading compact-heading"><div><p class="section-overline">PROFILE DETAILS</p><h2>Edit student</h2></div><button class="profile-inline-button" id="cancel-profile-edit" type="button">Cancel</button></div>
+                                <div class="profile-edit-grid">
+                                    <div class="field"><label for="edit-name">Full name</label><input id="edit-name" name="name" required></div>
+                                    <div class="field"><label for="edit-email">Email address</label><input id="edit-email" name="email" type="email" required></div>
+                                    <div class="field"><label for="edit-department">Department</label><input id="edit-department" name="department" required></div>
+                                    <div class="field"><label for="edit-cgpa">CGPA</label><input id="edit-cgpa" name="cgpa" type="number" min="0" max="10" step="0.01" required></div>
+                                    <div class="field profile-edit-skills"><label for="edit-skills">Skills</label><input id="edit-skills" name="skills" required></div>
+                                </div>
+                                <p class="profile-feedback" id="edit-feedback" role="status" aria-live="polite"></p>
+                                <button class="profile-button profile-primary" id="save-profile-button" type="submit">Save changes</button>
+                            </form>
+
+                            <section class="profile-panel profile-details-panel" aria-labelledby="details-title">
+                                <div class="section-heading compact-heading"><div><p class="section-overline">ACADEMIC RECORD</p><h2 id="details-title">Profile details</h2></div><span class="profile-registered" id="profile-registered"></span></div>
+                                <dl class="profile-details-grid">
+                                    <div><dt>Department</dt><dd id="detail-department"></dd></div>
+                                    <div><dt>CGPA</dt><dd id="detail-cgpa"></dd></div>
+                                    <div class="profile-skills-detail"><dt>Skills</dt><dd id="detail-skills"></dd></div>
+                                    <div><dt>Registration date</dt><dd id="detail-registered"></dd></div>
+                                </dl>
+                            </section>
+
+                            <section class="profile-panel placement-panel" aria-labelledby="applications-title">
+                                <div class="section-heading compact-heading"><div><p class="section-overline">RECRUITMENT ACTIVITY</p><h2 id="applications-title">Placement journey</h2></div><span class="profile-count" id="application-count"></span></div>
+                                <div class="application-list" id="application-list" aria-live="polite"></div>
+                            </section>
+                        </section>
+
+                        <aside class="profile-side-column">
+                            <section class="profile-summary" aria-label="Student summary">
+                                <p class="section-overline">AT A GLANCE</p>
+                                <div class="profile-summary-stats">
+                                    <div><span>CGPA</span><strong id="summary-cgpa">—</strong><small>out of 10</small></div>
+                                    <div><span>APPLICATIONS</span><strong id="summary-applications">0</strong><small>placement drives</small></div>
+                                    <div><span>PLACED</span><strong id="summary-placed">0</strong><small>successful outcome</small></div>
+                                </div>
+                                <div class="profile-completeness"><div class="profile-completeness-heading"><span>Profile completeness</span><strong id="completeness-value">0%</strong></div><div class="profile-progress-track"><span id="completeness-bar"></span></div></div>
+                            </section>
+
+                            <section class="profile-panel application-add-panel" aria-labelledby="add-application-title">
+                                <div class="section-heading compact-heading"><div><p class="section-overline">TRACK A CANDIDACY</p><h2 id="add-application-title">Add placement drive</h2></div></div>
+                                <form id="add-application-form">
+                                    <div class="field"><label for="application-drive">Placement drive</label><select id="application-drive" name="drive" required><option value="">Choose a drive</option></select></div>
+                                    <div class="field"><label for="application-status">Current status</label><select id="application-status" name="status"><option>Applied</option><option>Shortlisted</option><option>Selected</option><option>Rejected</option><option>Placed</option></select></div>
+                                    <p class="profile-feedback" id="application-feedback" role="status" aria-live="polite"></p>
+                                    <button class="profile-button profile-primary" id="add-application-button" type="submit">Add to placement journey</button>
+                                </form>
+                            </section>
+                        </aside>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
